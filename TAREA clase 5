@@ -1,0 +1,43 @@
+import numpy as np
+import sympy as sym
+import matplotlib.pyplot as plt
+sym.var('x', real = True)
+fx = (x+1)**3 + 3*x**2 + 2
+print("f(x) = ",fx)
+fxprima = sym.diff(fx, x)
+print("f'(x) = " , fxprima)
+fx2prima = sym.diff(fxprima, x)
+print("f''(x) = ", fx2prima)
+
+fxnum = sym.lambdify([x], fx, 'numpy')
+fxprimanum = sym.lambdify([x], fxprima, 'numpy')
+fx2primanum = sym.lambdify([x], fx2prima, 'numpy')
+xvector = np.linspace(-10, 5, 1000)
+
+plt.plot(xvector, fxnum(xvector))
+plt.xlabel('$Eje x$')
+plt.ylabel('$Eje y$')
+plt.grid()
+plt.show()
+
+valores = sym.solve(fxprima, x)
+print("Valores críticos: ", valores)
+evaluaciones = []
+for i in valores:
+    #eva = sym.solve(fx, i)
+    eva= fxnum(i)
+    evaluaciones.append(float(eva))
+print("Puntos criticos: ",evaluaciones)
+evaluaciones2 = []
+eva3 = []
+for i in valores:
+    #eva = sym.solve(fx, i)
+    eva2= fx2primanum(i)
+    evaluaciones2.append(float(eva2))
+print("Criterio de 2da derivada: ", evaluaciones2)
+for e in evaluaciones2:
+    if e > 0:
+        eva3.append("Mínimo")
+    if e < 0:
+        eva3.append("Máximo")
+print("Maximo o mínimo?: ",eva3)
